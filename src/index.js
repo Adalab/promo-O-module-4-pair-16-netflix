@@ -15,6 +15,10 @@ server.listen(serverPort, () => {
   console.log(`Server listening at http://localhost:${serverPort}`);
 });
 
+//servidor de estaticos
+const staticServerPath = "./src/public-react";
+server.use(express.static(staticServerPath));
+
 // Esto es el endpoint (puede ser post, get... y el ./ con la dirección que va en el fetch)
 //localhost4000/movies;
 server.get("/movies", (req, res) => {
