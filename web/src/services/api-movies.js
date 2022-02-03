@@ -6,9 +6,9 @@ const getMoviesFromApi = (queryParams) => {
   //url fija a la que apuntamos
   const url = "http://localhost:4000/movies";
   ////creo el string de query params usando lo que viene en el objeto queryParams (que es params)
-  const queryParams = `?gender=${queryParams.gender}&sort=${queryParams.sort}`;
+  const dataParams = `?gender=${queryParams.gender}&sort=${queryParams.sort}`;
   //se hace el fetch de todo
-  return fetch(url + queryParams)
+  return fetch(url + dataParams)
     .then((response) => response.json())
     .then((data) => {
       return data;
