@@ -8,12 +8,23 @@ const movies = require("../web/src/data/movies.json");
 const server = express();
 server.use(cors());
 server.use(express.json());
+server.set('view engine', 'ejs');
 
 // init express aplication
 const serverPort = 4000;
 server.listen(serverPort, () => {
   console.log(`Server listening at http://localhost:${serverPort}`);
 });
+
+// Consigue el id de la película que se va a renderizar
+// Buscamos en movies (el mismo nombre que el fihero.json) y el siguiente después de : tiene el nombre que queramos, pero en req.params tiene que ser igual que en el parámetro
+server.get('/movies/:movieId', (req, res) => { 
+  const requestParamsId = req.params.movieId;
+  const foundMovie = movies.movies.find((eachMovie) => eachMovie.id === requestParamsId)
+  console.log(foundMovie)
+  res.render('movie', foundMovie)
+  });
+
 
 //servidor de estaticos
 const staticServerPath = "./src/public-react";
@@ -38,3 +49,4 @@ server.get("/movies", (req, res) => {
   //lo devuelvo
   res.json(response);
 });
+
