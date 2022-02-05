@@ -5,15 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Netflix</title>
-    <link rel="stylesheet" href="../web/src/stylesheets/AppMovies.scss" />
-    <link rel="stylesheet" href="../web/src/stylesheets/index.scss">
-    <link rel="stylesheet" href="../web/src/stylesheets/core.scss">
+    <!-- hemos creado un servidor estático para css y se importa a través de la ruta local -->
+    <link rel="stylesheet" href="http://localhost:4000/main.css" />
   </head>
   <body>
-    <li className="card">
-      <img className="card__img" src="<%=image%>" />
-      <h3 className="card__title"><%=title%></h3>
-      <p className="card__description"><%=gender%></p>
+    <li class="card">
+      <img class="card__img" src="<%=image%>" />
+      <h3 class="card__title"><%=title%></h3>
+      <p class="card__description"><%=gender%></p>
     </li>
   </body>
 </html>

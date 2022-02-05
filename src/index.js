@@ -8,7 +8,7 @@ const movies = require("../web/src/data/movies.json");
 const server = express();
 server.use(cors());
 server.use(express.json());
-server.set('view engine', 'ejs');
+server.set("view engine", "ejs");
 
 // init express aplication
 const serverPort = 4000;
@@ -18,17 +18,14 @@ server.listen(serverPort, () => {
 
 // Consigue el id de la película que se va a renderizar
 // Buscamos en movies (el mismo nombre que el fihero.json) y el siguiente después de : tiene el nombre que queramos, pero en req.params tiene que ser igual que en el parámetro
-server.get('/movies/:movieId', (req, res) => { 
+server.get("/movies/:movieId", (req, res) => {
   const requestParamsId = req.params.movieId;
-  const foundMovie = movies.movies.find((eachMovie) => eachMovie.id === requestParamsId)
-  console.log(foundMovie)
-  res.render('movie', foundMovie)
-  });
-
-
-//servidor de estaticos
-const staticServerPath = "./src/public-react";
-server.use(express.static(staticServerPath));
+  const foundMovie = movies.movies.find(
+    (eachMovie) => eachMovie.id === requestParamsId
+  );
+  console.log(foundMovie);
+  res.render("movie", foundMovie);
+});
 
 // Esto es el endpoint (puede ser post, get... y el ./ con la dirección que va en el fetch)
 //localhost4000/movies;
@@ -50,3 +47,21 @@ server.get("/movies", (req, res) => {
   res.json(response);
 });
 
+server.post("/login", (req, res)) => {
+const email = req.body.email
+const name = req.body.name
+const id = req.body.id
+const pass = req.body.pass
+  res.json(data)
+};
+//servidor de estaticos
+const staticServerPath = "./src/public-react";
+server.use(express.static(staticServerPath));
+
+// Servidor de estáticos para las fotos
+const staticServerPathImg = "./src/public-movies-images";
+server.use(express.static(staticServerPathImg));
+
+// Servidor de estáticos para el css
+const staticServerPathCss = "./src/public-css";
+server.use(express.static(staticServerPathCss));
