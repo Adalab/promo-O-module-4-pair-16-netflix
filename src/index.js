@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 //importo json
 const movies = require("../web/src/data/movies.json");
+const users = require("../web/src/data/users.json");
 
 // create and config server
 const server = express();
@@ -46,14 +47,24 @@ server.get("/movies", (req, res) => {
   //lo devuelvo
   res.json(response);
 });
+//endpoint del login
+server.post("/login", (req, res) => {
+  // const findUserMail = users.find(eachUser => eachUser.email === )
+  const reqEmail = req.body.email;
+  const reqPass = req.body.password;
+  console.log(req.body);
 
-server.post("/login", (req, res)) => {
-const email = req.body.email
-const name = req.body.name
-const id = req.body.id
-const pass = req.body.pass
-  res.json(data)
-};
+  //busco dentro del json de users los usuarios que tengan === contraseña y === mail
+  const userFilter = users.filter((eachUser) => {
+    eachUser.email === reqEmail && eachUser.password === reqPass
+      ? { success: true, id: eachUser.id }
+      : { success: false, error: "mail mal" };
+  });
+
+  // res.status(404);
+  //en el json voy a mandar que diga no se ha podido ejecutar esta peticion porque faltan datos
+  res.json(userFilter);
+});
 //servidor de estaticos
 const staticServerPath = "./src/public-react";
 server.use(express.static(staticServerPath));
