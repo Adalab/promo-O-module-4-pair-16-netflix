@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 //importo json
 const movies = require("../web/src/data/movies.json");
+const users = require("../web/src/data/users.json");
 
 // create and config server
 const server = express();
@@ -33,11 +34,12 @@ server.get("/movies", (req, res) => {
   // esta constante tiene los datos que nos de vuelve data en la API
   //en req.query cojo los parametros de query (los que vienen en la url)
   //en res se los devuelvo al front
-  console.log(`query params: ${req.query}`);
   //filtro en movies.movies filtro las peliculas cuyo género sea igual a lo que me viene del parámetro gender y sino devuelvo todo
   const filteredMovies = req.query.gender
     ? movies.movies.filter((eachMovie) => eachMovie.gender === req.query.gender)
     : movies.movies;
+  console.log(filteredMovies.length);
+
   //genero el objeto q le devuelvo a front
   const response = {
     success: true,
@@ -46,14 +48,25 @@ server.get("/movies", (req, res) => {
   //lo devuelvo
   res.json(response);
 });
+//endpoint del login
+server.post("/login", (req, res) => {
+  const reqEmail = req.body.email;
+  const reqPass = req.body.password;
+  let response = {};
+  //busco dentro del json de users los usuarios que tengan === contraseña y === mail
+  const userFilter = users.filter(
+    (eachUser) => eachUser.email === reqEmail && eachUser.password === reqPass
+  );
+  const idUser = users.map((eachUser) => eachUser.id);
 
-server.post("/login", (req, res)) => {
-const email = req.body.email
-const name = req.body.name
-const id = req.body.id
-const pass = req.body.pass
-  res.json(data)
-};
+  if (userFilter.length > 0) {
+    response = { success: true, id: JSON.stringify(idUser) };
+  } else {
+    response = { success: false, error: "mail mal" };
+  }
+  console.log(response);
+  res.json(response);
+});
 //servidor de estaticos
 const staticServerPath = "./src/public-react";
 server.use(express.static(staticServerPath));
