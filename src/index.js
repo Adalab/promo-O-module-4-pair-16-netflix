@@ -38,7 +38,6 @@ server.get("/movies", (req, res) => {
   const filteredMovies = req.query.gender
     ? movies.movies.filter((eachMovie) => eachMovie.gender === req.query.gender)
     : movies.movies;
-  console.log(filteredMovies.length);
 
   //genero el objeto q le devuelvo a front
   const response = {
@@ -57,10 +56,9 @@ server.post("/login", (req, res) => {
   const userFilter = users.filter(
     (eachUser) => eachUser.email === reqEmail && eachUser.password === reqPass
   );
-  const idUser = users.map((eachUser) => eachUser.id);
 
   if (userFilter.length > 0) {
-    response = { success: true, id: JSON.stringify(idUser) };
+    response = { success: true, id: userFilter[0].id };
   } else {
     response = { success: false, error: "mail mal" };
   }
