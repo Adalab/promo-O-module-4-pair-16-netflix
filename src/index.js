@@ -36,7 +36,7 @@ server.get("/movies/:movieId", (req, res) => {
 server.get("/movies", (req, res) => {
   //<---NUEVO (DATABASE)--->
   // preparamos la query
-  const query = db.prepare("SELECT * FROM users");
+  const query = db.prepare("SELECT * , name as title FROM movies");
   // ejecutamos la query
   const movies = query.all();
   const filteredMovies = req.query.gender
