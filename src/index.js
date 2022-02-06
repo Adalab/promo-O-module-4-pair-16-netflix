@@ -4,6 +4,9 @@ const cors = require("cors");
 //importo json
 const movies = require("../web/src/data/movies.json");
 const users = require("../web/src/data/users.json");
+const Database = require("better-sqlite3");
+//Le digo a Node que quiero usar esa base de datos
+const db = new Database("./src/db/database.db", { verbose: console.log });
 
 // create and config server
 const server = express();
@@ -31,19 +34,33 @@ server.get("/movies/:movieId", (req, res) => {
 // Esto es el endpoint (puede ser post, get... y el ./ con la dirección que va en el fetch)
 //localhost4000/movies;
 server.get("/movies", (req, res) => {
-  // esta constante tiene los datos que nos de vuelve data en la API
-  //en req.query cojo los parametros de query (los que vienen en la url)
-  //en res se los devuelvo al front
-  //filtro en movies.movies filtro las peliculas cuyo género sea igual a lo que me viene del parámetro gender y sino devuelvo todo
+  //<---NUEVO (DATABASE)--->
+  // preparamos la query
+  const query = db.prepare("SELECT * FROM users");
+  // ejecutamos la query
+  const movies = query.all();
   const filteredMovies = req.query.gender
-    ? movies.movies.filter((eachMovie) => eachMovie.gender === req.query.gender)
-    : movies.movies;
+    ? users.filter((eachMovie) => eachMovie.gender === req.query.gender)
+    : movies;
 
   //genero el objeto q le devuelvo a front
   const response = {
     success: true,
     movies: filteredMovies,
   };
+  // esta constante tiene los datos que nos de vuelve data en la API
+  //en req.query cojo los parametros de query (los que vienen en la url)
+  //en res se los devuelvo al front
+  //filtro en movies.movies filtro las peliculas cuyo género sea igual a lo que me viene del parámetro gender y sino devuelvo todo
+  // const filteredMovies = req.query.gender
+  //   ? movies.movies.filter((eachMovie) => eachMovie.gender === req.query.gender)
+  //   : movies.movies;
+
+  // //genero el objeto q le devuelvo a front
+  // const response = {
+  //   success: true,
+  //   movies: filteredMovies,
+  // };
   //lo devuelvo
   res.json(response);
 });
