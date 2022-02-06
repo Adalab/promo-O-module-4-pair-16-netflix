@@ -34,11 +34,12 @@ server.get("/movies", (req, res) => {
   // esta constante tiene los datos que nos de vuelve data en la API
   //en req.query cojo los parametros de query (los que vienen en la url)
   //en res se los devuelvo al front
-  console.log(`query params: ${req.query}`);
   //filtro en movies.movies filtro las peliculas cuyo género sea igual a lo que me viene del parámetro gender y sino devuelvo todo
   const filteredMovies = req.query.gender
     ? movies.movies.filter((eachMovie) => eachMovie.gender === req.query.gender)
     : movies.movies;
+  console.log(filteredMovies.length);
+
   //genero el objeto q le devuelvo a front
   const response = {
     success: true,
@@ -49,21 +50,22 @@ server.get("/movies", (req, res) => {
 });
 //endpoint del login
 server.post("/login", (req, res) => {
-  // const findUserMail = users.find(eachUser => eachUser.email === )
   const reqEmail = req.body.email;
   const reqPass = req.body.password;
-  console.log(req.body);
-
+  let response = {};
   //busco dentro del json de users los usuarios que tengan === contraseña y === mail
-  const userFilter = users.filter((eachUser) => {
-    eachUser.email === reqEmail && eachUser.password === reqPass
-      ? { success: true, id: eachUser.id }
-      : { success: false, error: "mail mal" };
-  });
+  const userFilter = users.filter(
+    (eachUser) => eachUser.email === reqEmail && eachUser.password === reqPass
+  );
+  const idUser = users.map((eachUser) => eachUser.id);
 
-  // res.status(404);
-  //en el json voy a mandar que diga no se ha podido ejecutar esta peticion porque faltan datos
-  res.json(userFilter);
+  if (userFilter.length > 0) {
+    response = { success: true, id: parseInt(idUser) };
+  } else {
+    response = { success: false, error: "mail mal" };
+  }
+  console.log(response);
+  res.json(response);
 });
 //servidor de estaticos
 const staticServerPath = "./src/public-react";
