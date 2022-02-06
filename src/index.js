@@ -60,7 +60,7 @@ server.post("/login", (req, res) => {
   const idUser = users.map((eachUser) => eachUser.id);
 
   if (userFilter.length > 0) {
-    response = { success: true, id: parseInt(idUser) };
+    response = { success: true, id: JSON.stringify(idUser) };
   } else {
     response = { success: false, error: "mail mal" };
   }
