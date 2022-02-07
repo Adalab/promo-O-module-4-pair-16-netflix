@@ -65,6 +65,28 @@ server.post("/login", (req, res) => {
   console.log(response);
   res.json(response);
 });
+
+
+// -------- otra forma de hacer el endpoint de login
+// server.post("/login", (req, res) => {
+//   const findUser = users.find(
+//     (eachUser) =>
+//       eachUser.email === req.body.email &&
+//       eachUser.password === req.body.password
+//   );
+//   if (findUser) {
+//     res.json({
+//       success: true,
+//       userId: findUser.id,
+//     });
+//   } else {
+//     res.json({
+//       success: false,
+//       errorMessage: "Usuario no encontrado",
+//     });
+//   }
+// });
+
 //servidor de estaticos
 const staticServerPath = "./src/public-react";
 server.use(express.static(staticServerPath));
