@@ -5,6 +5,7 @@ const cors = require("cors");
 const movies = require("../web/src/data/movies.json");
 const users = require("../web/src/data/users.json");
 const Database = require("better-sqlite3");
+const { response } = require("express");
 //Le digo a Node que quiero usar esa base de datos
 const db = new Database("./src/db/database.db", { verbose: console.log });
 
@@ -27,7 +28,7 @@ server.get("/movies/:movieId", (req, res) => {
   const foundMovie = movies.movies.find(
     (eachMovie) => eachMovie.id === requestParamsId
   );
-  console.log(foundMovie);
+  // console.log(foundMovie);
   res.render("movie", foundMovie);
 });
 
@@ -42,7 +43,7 @@ server.get("/movies", (req, res) => {
   );
   // const gender = query.all(req.query.gender);
   // ejecutamos la query
-  console.log(req.query.gender);
+  // console.log(req.query.gender);
   const movies = query.all();
 
   const filterMoviesGender = queryGender.all(req.query.gender);
@@ -52,7 +53,7 @@ server.get("/movies", (req, res) => {
   } else {
     response = movies;
   }
-  console.log(filterMoviesGender);
+  // console.log(filterMoviesGender);
   res.json(response);
   // const filteredMovies = req.query.gender
   //   ? users.filter((eachMovie) => eachMovie.gender === req.query.gender)
@@ -92,9 +93,9 @@ server.post("/login", (req, res) => {
   if (userFilter.length > 0) {
     response = { success: true, id: userFilter[0].id };
   } else {
-    response = { success: false, error: "mail mal" };
+    response = { success: false, error: "Usuario no encontrado" };
   }
-  console.log(response);
+  // console.log(response);
   res.json(response);
 });
 
@@ -117,7 +118,22 @@ server.post("/login", (req, res) => {
 //     });
 //   }
 // });
+//endpoint sendSingUpToApi
+server.post("/sing-up", (req, res) => {
+  const reqEmail = req.body.email;
+  const reqPass = req.body.pass;
+  const userFilter = users.filter((eachUser) => eachUser.email === reqEmail);
+  console.log(userFilter);
 
+  if (userFilter !== reqEmail) {
+    res.json({ success: true });
+  } else {
+    res.json({
+      success: false,
+      errorMessage: "Usuaria ya existente",
+    });
+  }
+});
 //servidor de estaticos
 const staticServerPath = "./src/public-react";
 server.use(express.static(staticServerPath));
