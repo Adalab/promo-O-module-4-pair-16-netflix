@@ -41,7 +41,9 @@ const App = () => {
     };
     //llamo a apiMovies etc y le paso params (irse a api-movies.js)
     apiMovies.getMoviesFromApi(params).then((response) => {
-      setAppMovies(response.movies);
+      console.log(response);
+      setAppMovies(response);
+      //Estabamos accediendo al antiguo json y accedíamos como response.movies, entonces daba undefined porque en mi nueva base de datos no tiengo que ir a .movie
     });
   }, [allMoviesOptionGender, allMoviesOptionSort]);
 

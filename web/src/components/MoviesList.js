@@ -24,7 +24,7 @@ const MoviesList = (props) => {
   const renderEmptyList = () => {
     return <p>No hay películas en este listado</p>;
   };
-
+  //Nos daba un error en este punto length porque lo que venía de la Api era undefined.
   return props.movies.length ? renderMovieList() : renderEmptyList();
 };
 

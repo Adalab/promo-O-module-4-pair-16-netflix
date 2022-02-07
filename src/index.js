@@ -44,6 +44,7 @@ server.get("/movies", (req, res) => {
   // ejecutamos la query
   console.log(req.query.gender);
   const movies = query.all();
+
   const filterMoviesGender = queryGender.all(req.query.gender);
   let response = {};
   if (filterMoviesGender) {
