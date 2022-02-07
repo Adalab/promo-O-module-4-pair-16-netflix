@@ -47,7 +47,7 @@ server.get("/movies", (req, res) => {
 
   const filterMoviesGender = queryGender.all(req.query.gender);
   let response = {};
-  if (filterMoviesGender) {
+  if (filterMoviesGender.length > 0) {
     response = filterMoviesGender;
   } else {
     response = movies;
