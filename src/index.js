@@ -37,17 +37,31 @@ server.get("/movies", (req, res) => {
   //<---NUEVO (DATABASE)--->
   // preparamos la query
   const query = db.prepare("SELECT * , name as title FROM movies");
+  const queryGender = db.prepare(
+    "SELECT * , name as title FROM movies  WHERE gender = ?"
+  );
+  // const gender = query.all(req.query.gender);
   // ejecutamos la query
+  console.log(req.query.gender);
   const movies = query.all();
-  const filteredMovies = req.query.gender
-    ? users.filter((eachMovie) => eachMovie.gender === req.query.gender)
-    : movies;
+  const filterMoviesGender = queryGender.all(req.query.gender);
+  let response = {};
+  if (filterMoviesGender) {
+    response = filterMoviesGender;
+  } else {
+    response = movies;
+  }
+  console.log(filterMoviesGender);
+  res.json(response);
+  // const filteredMovies = req.query.gender
+  //   ? users.filter((eachMovie) => eachMovie.gender === req.query.gender)
+  //   : movies;
 
   //genero el objeto q le devuelvo a front
-  const response = {
-    success: true,
-    movies: filteredMovies,
-  };
+  // const response = {
+  //   success: true,
+  //   movies: filteredMovies,
+  // };
   // esta constante tiene los datos que nos de vuelve data en la API
   //en req.query cojo los parametros de query (los que vienen en la url)
   //en res se los devuelvo al front
@@ -62,7 +76,7 @@ server.get("/movies", (req, res) => {
   //   movies: filteredMovies,
   // };
   //lo devuelvo
-  res.json(response);
+  // res.json(response);
 });
 //endpoint del login
 server.post("/login", (req, res) => {
@@ -82,7 +96,6 @@ server.post("/login", (req, res) => {
   console.log(response);
   res.json(response);
 });
-
 
 // -------- otra forma de hacer el endpoint de login
 // server.post("/login", (req, res) => {
