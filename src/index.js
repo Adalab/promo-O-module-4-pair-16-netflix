@@ -8,6 +8,7 @@ const Database = require("better-sqlite3");
 //Le digo a Node que quiero usar esa base de datos
 const db = new Database("./src/db/database.db", { verbose: console.log });
 
+
 // create and config server
 const server = express();
 server.use(cors());
@@ -117,6 +118,35 @@ server.post("/login", (req, res) => {
 //     });
 //   }
 // });
+
+// endpoint de signUp
+server.post("/signUp", (req, res) => {
+  const reqEmail = req.body.email;
+  const reqPass = req.body.password;
+
+  // Seleccionar las usuarias comprobando si está ya guardado su email
+  const selectuser = db.prepare("SELECT * FROM users WHERE email = ?");
+  const foundUser = selectuser.get(reqEmail);
+console.log(foundUser)
+console.log(req.body.email)
+console.log(req.body.password)
+  if (foundUser === undefined) {
+    const querySignUp = db.prepare(
+      "INSERT INTO users (email, password) VALUES (?,?)"
+    );
+    // Hay que ejecutar la sentencia con un run
+    const userInsert = querySignUp.run(reqEmail, reqPass);
+    res.json({
+      success: true,
+      userId: userInsert.lastInsertRowid,
+    });
+  } else {
+    res.json({
+      success: false,
+      errorMessage: "la usuaria no existe",
+    });
+  }
+});
 
 //servidor de estaticos
 const staticServerPath = "./src/public-react";
