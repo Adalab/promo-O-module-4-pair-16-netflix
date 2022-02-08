@@ -23,6 +23,7 @@ const SignUp = props => {
     });
   };
 
+  console.log(handleForm);
   // render
 
   const renderErrorMessage = () => {

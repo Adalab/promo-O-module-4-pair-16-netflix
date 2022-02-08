@@ -125,15 +125,34 @@ server.post("/sing-up", (req, res) => {
   const userFilter = users.filter((eachUser) => eachUser.email === reqEmail);
   console.log(userFilter);
 
-  if (userFilter !== reqEmail) {
-    res.json({ success: true });
+// endpoint de signUp
+server.post("/signUp", (req, res) => {
+  const reqEmail = req.body.email;
+  const reqPass = req.body.password;
+
+  // Seleccionar las usuarias comprobando si está ya guardado su email
+  const selectuser = db.prepare("SELECT * FROM users WHERE email = ?");
+  const foundUser = selectuser.get(reqEmail);
+  console.log(foundUser);
+  if (foundUser === undefined) {
+    const querySignUp = db.prepare(
+      "INSERT INTO users (email, password) VALUES (?,?)"
+    );
+    // Hay que ejecutar la sentencia con un run
+    const userInsert = querySignUp.run(reqEmail, reqPass);
+    console.log(userInsert);
+    res.json({
+      success: true,
+      userId: userInsert.lastInsertRowid,
+    });
   } else {
     res.json({
       success: false,
-      errorMessage: "Usuaria ya existente",
+      errorMessage: "la usuaria no existe",
     });
   }
 });
+
 //servidor de estaticos
 const staticServerPath = "./src/public-react";
 server.use(express.static(staticServerPath));
