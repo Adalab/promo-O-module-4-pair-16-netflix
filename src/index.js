@@ -119,11 +119,6 @@ server.post("/login", (req, res) => {
 //   }
 // });
 //endpoint sendSingUpToApi
-server.post("/sing-up", (req, res) => {
-  const reqEmail = req.body.email;
-  const reqPass = req.body.pass;
-  const userFilter = users.filter((eachUser) => eachUser.email === reqEmail);
-  console.log(userFilter);
 
 // endpoint de signUp
 server.post("/signUp", (req, res) => {

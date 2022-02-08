@@ -30,8 +30,8 @@ const sendLoginToApi = (dataUser) => {
 
 // signup
 
-const sendSingUpToApi = (dataSingUp) => {
-  console.log("Se están enviando datos al signup:", dataSingUp);
+const sendSingUpToApi = (data) => {
+  console.log("Se están enviando datos al signup:", data);
   // CAMBIA ESTE FETCH PARA QUE APUNTE A UN ENDPOINT DE TU SERVIDOR, PIENSA SI DEBE SER GET O POST, PIENSA QUÉ DATOS DEBES ENVIAR, ETC
   return fetch("//localhost:4000/signUp", {
     method: "POST",
