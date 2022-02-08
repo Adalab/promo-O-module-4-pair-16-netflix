@@ -5,7 +5,7 @@ const cors = require("cors");
 const movies = require("../web/src/data/movies.json");
 const users = require("../web/src/data/users.json");
 const Database = require("better-sqlite3");
-const { response } = require("express");
+
 //Le digo a Node que quiero usar esa base de datos
 const db = new Database("./src/db/database.db", { verbose: console.log });
 
@@ -84,19 +84,36 @@ server.get("/movies", (req, res) => {
 server.post("/login", (req, res) => {
   const reqEmail = req.body.email;
   const reqPass = req.body.password;
-  let response = {};
-  //busco dentro del json de users los usuarios que tengan === contraseña y === mail
-  const userFilter = users.filter(
-    (eachUser) => eachUser.email === reqEmail && eachUser.password === reqPass
+  const query = db.prepare(
+    "SELECT * FROM users WHERE email = ? AND password = ?"
   );
-
-  if (userFilter.length > 0) {
-    response = { success: true, id: userFilter[0].id };
+  const users = query.get(reqEmail, reqPass);
+  console.log(users);
+  // let response = {};
+  if (users === undefined) {
+    res.json({
+      success: false,
+      errorMessage: "Usuario no encontrado",
+    });
   } else {
-    response = { success: false, error: "Usuario no encontrado" };
+    res.json({
+      success: true,
+      id: users.id,
+    });
   }
+  //antiguo filtro con json
+  //busco dentro del json de users los usuarios que tengan === contraseña y === mail
+  // const userFilter = users.filter(
+  //   (eachUser) => eachUser.email === reqEmail && eachUser.password === reqPass
+  // );
+
+  // if (userFilter.length > 0) {
+  //   response = { success: true, id: userFilter[0].id };
+  // } else {
+  //   response = { success: false, error: "Usuario no encontrado" };
+  // }
   // console.log(response);
-  res.json(response);
+  // res.json(response);
 });
 
 // -------- otra forma de hacer el endpoint de login
@@ -146,6 +163,14 @@ server.post("/signUp", (req, res) => {
       errorMessage: "la usuaria no existe",
     });
   }
+});
+
+//endpoint de user/movies (Base de datos III)
+server.get("/user/movies", (req, res) => {
+  res.json({
+    success: true,
+    movies: [],
+  });
 });
 
 //servidor de estaticos
