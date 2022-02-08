@@ -8,7 +8,6 @@ const Database = require("better-sqlite3");
 //Le digo a Node que quiero usar esa base de datos
 const db = new Database("./src/db/database.db", { verbose: console.log });
 
-
 // create and config server
 const server = express();
 server.use(cors());
@@ -127,15 +126,14 @@ server.post("/signUp", (req, res) => {
   // Seleccionar las usuarias comprobando si está ya guardado su email
   const selectuser = db.prepare("SELECT * FROM users WHERE email = ?");
   const foundUser = selectuser.get(reqEmail);
-console.log(foundUser)
-console.log(req.body.email)
-console.log(req.body.password)
+  console.log(foundUser);
   if (foundUser === undefined) {
     const querySignUp = db.prepare(
       "INSERT INTO users (email, password) VALUES (?,?)"
     );
     // Hay que ejecutar la sentencia con un run
     const userInsert = querySignUp.run(reqEmail, reqPass);
+    console.log(userInsert);
     res.json({
       success: true,
       userId: userInsert.lastInsertRowid,
