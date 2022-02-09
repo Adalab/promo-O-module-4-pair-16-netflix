@@ -83,7 +83,7 @@ const getUserMoviesFromApi = (userId) => {
   // CAMBIA ESTE FETCH PARA QUE APUNTE A UN ENDPOINT DE TU SERVIDOR, PIENSA SI DEBE SER GET O POST, PIENSA QUÉ DATOS DEBES ENVIAR, ETC
   return fetch("//localhost:4000/user/movies", {
     method: "GET",
-    headers: { userId: "user-Id" },
+    headers: { userId: userId },
   })
     .then((response) => response.json())
     .then((data) => {

@@ -88,7 +88,7 @@ server.post("/login", (req, res) => {
     "SELECT * FROM users WHERE email = ? AND password = ?"
   );
   const users = query.get(reqEmail, reqPass);
-  console.log(users);
+  //console.log(users);
   // let response = {};
   if (users === undefined) {
     res.json({
@@ -145,14 +145,14 @@ server.post("/signUp", (req, res) => {
   // Seleccionar las usuarias comprobando si está ya guardado su email
   const selectuser = db.prepare("SELECT * FROM users WHERE email = ?");
   const foundUser = selectuser.get(reqEmail);
-  console.log(foundUser);
+  // console.log(foundUser);
   if (foundUser === undefined) {
     const querySignUp = db.prepare(
       "INSERT INTO users (email, password) VALUES (?,?)"
     );
     // Hay que ejecutar la sentencia con un run
     const userInsert = querySignUp.run(reqEmail, reqPass);
-    console.log(userInsert);
+    // console.log(userInsert);
     res.json({
       success: true,
       userId: userInsert.lastInsertRowid,
@@ -167,6 +167,9 @@ server.post("/signUp", (req, res) => {
 
 //endpoint de user/movies (Base de datos III)
 server.get("/user/movies", (req, res) => {
+  const id = req.headers;
+  // console.log(userId);
+  console.log("headers", req.headers.userid);
   res.json({
     success: true,
     movies: [],
