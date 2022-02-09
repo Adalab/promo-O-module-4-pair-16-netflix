@@ -169,7 +169,7 @@ server.post("/signUp", (req, res) => {
 server.get("/user/movies", (req, res) => {
   const id = req.headers;
   // console.log(userId);
-  console.log("headers", req.headers.userid);
+  console.log("headers", req.headers.userId);
   res.json({
     success: true,
     movies: [],
